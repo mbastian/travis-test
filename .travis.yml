@@ -23,5 +23,5 @@ before_install:
   - ./innoinstall.sh
   - printf "#!/bin/sh\nunset DISPLAY\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"" > iscc
   - chmod +x ./iscc
-  - sudo cp iscc /usr/local/bin/iscc
-  - iscc /? 2> /dev/null | grep "Inno Setup Preprocessor"
+  - sudo cp ./iscc /usr/local/bin/iscc
+  - iscc gephi.iss
