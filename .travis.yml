@@ -25,9 +25,10 @@ before_install:
   - chmod +x ./iscc
   - sudo cp ./iscc /usr/local/bin/iscc
 
-  # Install ReplaceVistaIcon.exe
-  - cp ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe"
+  # Replace icon
+  - cp modules/application/src/main/app-resources/ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe"
   - printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon
   - chmod +x ./replacevistaicon
   - sudo cp ./replacevistaicon /usr/local/bin/replacevistaicon
-  - replacevistaicon ReplaceVistaIcon.exe gephi.ico 0 
+  - cd modules/application/src/main/app-resources/
+  - replacevistaicon ReplaceVistaIcon.exe gephi.ico 0
