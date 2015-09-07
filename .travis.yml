@@ -10,18 +10,24 @@ before_install:
   # Update APT (necessary!)
   - sudo apt-get update
 
- # Prepare environemnt for Inno Setup
+  # Prepare environemnt for Inno Setup
   - sudo add-apt-repository --yes ppa:arx/release
   - sudo apt-get update -d
   - sudo apt-get install -y -q innoextract wine
   - wine --version 
   - innoextract --version 
 
-# Install InnoSetup
+  # Install InnoSetup
   - printf '#!/bin/bash\nrm -rf /tmp/inno\nmkdir /tmp/inno\ncd /tmp/inno\nwget -O is.exe http://files.jrsoftware.org/is/5/isetup-5.5.5.exe\ninnoextract is.exe\nmkdir -p ~/\".wine/drive_c/inno\"\ncp -a app/* ~/\".wine/drive_c/inno\"' > innoinstall.sh
   - chmod +x ./innoinstall.sh
   - ./innoinstall.sh
   - printf '#!/bin/sh\nexport DISPLAY=\":0.0\"\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"' > iscc
   - chmod +x ./iscc
   - sudo cp ./iscc /usr/local/bin/iscc
-  - iscc gephi.iss
+
+  # Install ReplaceVistaIcon.exe
+  - cp ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe"
+  - printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon
+  - chmod +x ./replacevistaicon
+  - sudo cp ./replacevistaicon /usr/local/bin/replacevistaicon
+  - replacevistaicon ReplaceVistaIcon.exe gephi.ico 0 
