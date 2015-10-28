@@ -33,10 +33,11 @@ before_install:
   - ./innoinstall.sh
   - printf '#!/bin/sh\nexport DISPLAY=\":0.0\"\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"' > iscc
   - chmod +x ./iscc
+  - export PATH=$PATH:$PWD
 
   # Replace icon
   - cp modules/application/src/main/app-resources/ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe"
   - printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon
   - chmod +x ./replacevistaicon
   - cd modules/application/src/main/app-resources/
-  - ./replacevistaicon ReplaceVistaIcon.exe gephi.ico 0
+  - replacevistaicon ReplaceVistaIcon.exe gephi.ico 0
