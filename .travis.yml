@@ -16,9 +16,13 @@ addons:
     - libboost-all-dev
     - liblzma-dev
 
+cache:
+  directories:
+    - $HOME/.m2
+
 before_install:
   # Build & install innoextract
-  - git clone https://github.com/dscharrer/innoextract.git
+  - git clone --branch 1.5 https://github.com/dscharrer/innoextract.git
   - cd innoextract && mkdir -p build && cd build && cmake ..
   - make && export PATH=$PATH:$PWD
   - cd ../..
