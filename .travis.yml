@@ -20,15 +20,15 @@ before_install:
   # Build & install innoextract
   - git clone https://github.com/dscharrer/innoextract.git
   - cd innoextract && mkdir -p build && cd build && cmake ..
-  - make && mv innoextract ../../innoextract
+  - make
   - cd ../..
 
   # Prepare environemnt for Inno Setup
   - wine --version 
-  - ./innoextract --version 
+  - ./innoextract/build/innoextract --version 
 
   # Install InnoSetup
-  - printf '#!/bin/bash\nrm -rf /tmp/inno\nmkdir /tmp/inno\ncd /tmp/inno\nwget -O is.exe http://files.jrsoftware.org/is/5/isetup-5.5.5.exe\n./innoextract is.exe\nmkdir -p ~/\".wine/drive_c/inno\"\ncp -a app/* ~/\".wine/drive_c/inno\"' > innoinstall.sh
+  - printf '#!/bin/bash\nrm -rf /tmp/inno\nmkdir /tmp/inno\ncd /tmp/inno\nwget -O is.exe http://files.jrsoftware.org/is/5/isetup-5.5.5.exe\n./innoextract/build/innoextract is.exe\nmkdir -p ~/\".wine/drive_c/inno\"\ncp -a app/* ~/\".wine/drive_c/inno\"' > innoinstall.sh
   - chmod +x ./innoinstall.sh
   - ./innoinstall.sh
   - printf '#!/bin/sh\nexport DISPLAY=\":0.0\"\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"' > iscc
