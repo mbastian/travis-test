@@ -15,6 +15,7 @@ addons:
     - cmake
     - libboost-all-dev
     - liblzma-dev
+    - genisoimage
 
 cache:
   directories:
