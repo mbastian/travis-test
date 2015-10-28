@@ -1,3 +1,4 @@
+sudo: false
 language: java
 jdk:
   - oraclejdk8
@@ -6,14 +7,20 @@ branches:
   only:
     - master
 
+addons:
+  apt:
+    packages:
+    - wine
+
 before_install:
-  # Update APT (necessary!)
-  - sudo apt-get update
+  # Build & install innoextract
+  - git clone https://github.com/dscharrer/innoextract.git
+  - mkdir -p build && cd build && cmake ..
+  - make
+  - make install
+  - cd ../..
 
   # Prepare environemnt for Inno Setup
-  - sudo add-apt-repository --yes ppa:arx/release
-  - sudo apt-get update -d
-  - sudo apt-get install -y -q innoextract wine
   - wine --version 
   - innoextract --version 
 
@@ -23,12 +30,10 @@ before_install:
   - ./innoinstall.sh
   - printf '#!/bin/sh\nexport DISPLAY=\":0.0\"\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"' > iscc
   - chmod +x ./iscc
-  - sudo cp ./iscc /usr/local/bin/iscc
 
   # Replace icon
   - cp modules/application/src/main/app-resources/ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe"
   - printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon
   - chmod +x ./replacevistaicon
-  - sudo cp ./replacevistaicon /usr/local/bin/replacevistaicon
   - cd modules/application/src/main/app-resources/
-  - replacevistaicon ReplaceVistaIcon.exe gephi.ico 0
+  - ./replacevistaicon ReplaceVistaIcon.exe gephi.ico 0
