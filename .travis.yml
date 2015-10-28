@@ -15,9 +15,8 @@ addons:
 before_install:
   # Build & install innoextract
   - git clone https://github.com/dscharrer/innoextract.git
-  - mkdir -p build && cd build && cmake ..
-  - make
-  - make install
+  - cd innoextract && mkdir -p build && cd build && cmake ..
+  - make && make install
   - cd ../..
 
   # Prepare environemnt for Inno Setup
