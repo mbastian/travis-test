@@ -11,7 +11,10 @@ addons:
   apt:
     packages:
     - wine
-    - xz-utils
+    - build-essential
+    - cmake
+    - libboost-all-dev
+    - liblzma-dev
 
 before_install:
   # Build & install innoextract
