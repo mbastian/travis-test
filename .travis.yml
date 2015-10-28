@@ -11,6 +11,7 @@ addons:
   apt:
     packages:
     - wine
+    - xz-utils
 
 before_install:
   # Build & install innoextract
