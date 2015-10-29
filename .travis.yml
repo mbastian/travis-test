@@ -19,7 +19,7 @@ addons:
     - liblzma-dev
 
 before_install:
-  #if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+  if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     # Build & install innoextract
     - git clone --branch 1.5 https://github.com/dscharrer/innoextract.git
     - cd innoextract && mkdir -p build && cd build && cmake ..
@@ -41,10 +41,8 @@ before_install:
     # Replace icon
     - cp modules/application/src/main/app-resources/ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe"
     - printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon
-    - chmod +x ./replacevistaicon
-  #else
-    # Mac OS X
-  #fi
+    - chmod +x ./replacevistaicon;
+  fi
 
 script:
   - echo "Done"
