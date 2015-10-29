@@ -2,6 +2,7 @@ sudo: false
 language: java
 os:
   - linux
+  - osx
 jdk:
   - oraclejdk8
 
@@ -19,30 +20,16 @@ addons:
     - liblzma-dev
 
 before_install:
-  if [ "$TRAVIS_OS_NAME" == "linux" ]; then \
     # Build & install innoextract
-    && git clone --branch 1.5 https://github.com/dscharrer/innoextract.git \
-    && cd innoextract && mkdir -p build && cd build && cmake .. \
-    && make && export PATH=$PATH:$PWD \
-    && cd ../.. \
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then git clone --branch 1.5 https://github.com/dscharrer/innoextract.git;fi
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then cd innoextract && mkdir -p build && cd build && cmake .. && make && export PATH=$PATH:$PWD && cd ../..;fi
   
-    # Prepare environemnt for Inno Setup
-    && wine --version \
-    && innoextract --version \
-
     # Install InnoSetup
-    && printf '#!/bin/bash\nrm -rf /tmp/inno\nmkdir /tmp/inno\ncd /tmp/inno\nwget -O is.exe http://files.jrsoftware.org/is/5/isetup-5.5.5.exe\ninnoextract is.exe\nmkdir -p ~/\".wine/drive_c/inno\"\ncp -a app/* ~/\".wine/drive_c/inno\"' > innoinstall.sh \
-    && chmod +x ./innoinstall.sh \
-    && ./innoinstall.sh \
-    && printf '#!/bin/sh\nexport DISPLAY=\":0.0\"\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"' > iscc \
-    && chmod +x ./iscc \
-    && export PATH=$PATH:$PWD \
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then printf '#!/bin/bash\nrm -rf /tmp/inno\nmkdir /tmp/inno\ncd /tmp/inno\nwget -O is.exe http://files.jrsoftware.org/is/5/isetup-5.5.5.exe\ninnoextract is.exe\nmkdir -p ~/\".wine/drive_c/inno\"\ncp -a app/* ~/\".wine/drive_c/inno\"' > innoinstall.sh && chmod +x ./innoinstall.sh && ./innoinstall.sh;fi
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then printf '#!/bin/sh\nexport DISPLAY=\":0.0\"\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"' > iscc && chmod +x ./iscc && export PATH=$PATH:$PWD;fi
 
     # Replace icon
-    && cp modules/application/src/main/app-resources/ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe" \
-    && printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon \
-    && chmod +x ./replacevistaicon;
-  fi
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then cp modules/application/src/main/app-resources/ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe" && printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon && chmod +x ./replacevistaicon;fi
 
 script:
   - echo "Done"
