@@ -4,7 +4,7 @@ os:
   - linux
   - osx
 jdk:
-  - oraclejdk8
+  - openjdk6
 
 branches:
   only:
