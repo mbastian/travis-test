@@ -18,11 +18,6 @@ addons:
     - cmake
     - libboost-all-dev
     - liblzma-dev
-    - genisoimage
-
-cache:
-  directories:
-    - $HOME/.m2
 
 before_install:
   if [ "$TRAVIS_OS_NAME" == "linux" ]; then
