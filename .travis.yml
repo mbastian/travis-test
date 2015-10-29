@@ -30,4 +30,4 @@ before_install:
     - if [ "$TRAVIS_OS_NAME" == "linux" ]; then cp modules/application/src/main/app-resources/ReplaceVistaIcon.exe ~/".wine/drive_c/ReplaceVistaIcon.exe" && printf '#!/bin/sh\nunset DISPLAY\nexecutable=$1\niconfile=$2\niconid=$3\nwine "C:\ReplaceVistaIcon.exe" "$executable" "$iconfile" "$iconid"' > replacevistaicon && chmod +x ./replacevistaicon;fi
 
 script:
-  - echo "Done"
+  - mvn -version
