@@ -20,11 +20,11 @@ addons:
 
 before_install:
     # Build & install innoextract
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then git clone --branch 1.5 https://github.com/dscharrer/innoextract.git;fi
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then cd innoextract && mkdir -p build && cd build && cmake .. && make && export PATH=$PATH:$PWD && cd ../..;fi
+    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then git clone --branch 1.5 https://github.com/dscharrer/innoextract.git;fi
+    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then cd innoextract && mkdir -p build && cd build && cmake .. && make && export PATH=$PATH:$PWD && cd ../..;fi
   
     # Install InnoSetup
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then printf '#!/bin/bash\nrm -rf /tmp/inno\nmkdir /tmp/inno\ncd /tmp/inno\nwget -O is.exe http://files.jrsoftware.org/is/5/isetup-5.5.5.exe\ninnoextract is.exe\nmkdir -p ~/\".wine/drive_c/inno\"\ncp -a app/* ~/\".wine/drive_c/inno\"' > innoinstall.sh && chmod +x ./innoinstall.sh && ./innoinstall.sh;fi
+    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then printf '#!/bin/bash\nrm -rf /tmp/inno\nmkdir /tmp/inno\ncd /tmp/inno\nwget -O is.exe http://files.jrsoftware.org/is/5/isetup-5.5.5.exe\ninnoextract is.exe\nmkdir -p ~/\".wine/drive_c/inno\"\ncp -a app/* ~/\".wine/drive_c/inno\"' > innoinstall.sh && chmod +x ./innoinstall.sh && ./innoinstall.sh;fi
     #if [ "$TRAVIS_OS_NAME" == "linux" ]; then printf '#!/bin/sh\nexport DISPLAY=\":0.0\"\nscriptname=$1\n[ -f \"$scriptname\" ] && scriptname=$(winepath -w \"$scriptname\")\nwine \"C:\inno\ISCC.exe\" \"$scriptname\" \"/q\"' > iscc && chmod +x ./iscc && export PATH=$PATH:$PWD;fi
 
     # Replace icon
